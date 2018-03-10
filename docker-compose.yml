@@ -1,4 +1,4 @@
-version: '2'
+version: '3'
 services:
   postgres:
     image: postgres:9.6.2-alpine
@@ -9,6 +9,7 @@ services:
     env_file:
       - .env
     image: kguinto/nearby-component
+    # build: .
     command: bash -c 'while !</dev/tcp/postgres/5432; do sleep 1; done; npm start'
     volumes:
       - .:/nearby_service/
@@ -17,5 +18,5 @@ services:
     depends_on:
       - postgres
     environment:
-      DATABASE_URL: postgres://nearbyapp@postgres/nearbyitems
-      GOOGLE_MAPS_API_KEY: "${GOOGLE_MAPS_API_KEY}"
+      NEARBY_DATABASE_URL: "${NEARBY_DATABASE_URL}"
+      NEARBY_GOOGLE_MAPS_API_KEY: "${NEARBY_GOOGLE_MAPS_API_KEY}"
