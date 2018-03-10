@@ -2,7 +2,7 @@ import axios from 'axios';
 
 const getItem = (type, id) => (
   new Promise((resolve) => {
-    axios.get(`${window.location.origin}/nearby/${type}/${id}`)
+    axios.get(`/nearby/${type}/${id}`)
       .then((item) => {
         resolve(item.data);
       })
