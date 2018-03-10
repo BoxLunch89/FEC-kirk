@@ -2,12 +2,12 @@ import axios from 'axios';
 
 const getItem = (type, id) => (
   new Promise((resolve) => {
-    axios.get(`http://localhost:3003/${type}/${id}`) // refactor later
+    axios.get(`/nearby/${type}/${id}`)
       .then((item) => {
         resolve(item.data);
       })
-      .catch((err) => {
-        console.log('Error in dataHelpers getItem: ', err);
+      .catch(() => {
+        console.log('Error getting item', type, id);
       });
   })
 );
