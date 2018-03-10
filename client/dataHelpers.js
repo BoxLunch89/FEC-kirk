@@ -6,8 +6,8 @@ const getItem = (type, id) => (
       .then((item) => {
         resolve(item.data);
       })
-      .catch(() => {
-        console.log('Error in dataHelpers getItem');
+      .catch((err) => {
+        console.log('Error in dataHelpers getItem', err);
       });
   })
 );
