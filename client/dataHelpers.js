@@ -6,8 +6,11 @@ const getItem = (type, id) => (
       .then((item) => {
         resolve(item.data);
       })
-      .catch(() => {
+      .catch((err) => {
         console.log('Error getting item', type, id);
+        console.log(err.response.data);
+        console.log(err.response.status);
+        console.log(err.response.headers);
       });
   })
 );
