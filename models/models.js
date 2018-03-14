@@ -1,7 +1,8 @@
 const Sequelize = require('sequelize');
 
-const DATABASE_URL = process.env.DATABASE_URL || 'postgres://127.0.0.1:5432/nearbyitems';
-const sequelize = new Sequelize(DATABASE_URL, { logging: false });
+const { NEARBY_DATABASE_URL } = process.env;
+
+const sequelize = new Sequelize(NEARBY_DATABASE_URL, { logging: false });
 
 const Restaurant = sequelize.define('restaurant', {
   restaurant_id: {
