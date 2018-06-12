@@ -11,21 +11,21 @@ const newKey = () => {
 };
 
 const ReviewBubbles = ({ rating }) => {
-  let fullBubbleCount = Math.floor(rating / 2);
-  let halfBubbleCount = rating % 2;
-  let emptyBubbleCount = 5 - (fullBubbleCount + halfBubbleCount);
+  const fullBubbleCount = Math.floor(rating / 2);
+  const halfBubbleCount = rating % 2;
+  const emptyBubbleCount = 5 - (fullBubbleCount + halfBubbleCount);
 
   return (
     <div className="review-bubbles">
-      {(new Array(fullBubbleCount))
+      {new Array(fullBubbleCount)
         .fill('')
         .map(() => <ReviewBubble key={newKey()} />)}
 
-      {(new Array(halfBubbleCount))
+      {new Array(halfBubbleCount)
         .fill('')
         .map(() => <ReviewHalfBubble key={newKey()} />)}
 
-      {(new Array(emptyBubbleCount))
+      {new Array(emptyBubbleCount)
         .fill('')
         .map(() => <ReviewEmptyBubble key={newKey()} />)}
     </div>
