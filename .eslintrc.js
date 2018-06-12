@@ -7,13 +7,15 @@
 
 module.exports = {
   extends: 'airbnb',
-  "rules": {
-    "no-console": "off",
-    "comma-dangle": "off",
-    "prefer-const": "off"
+  rules: {
+    'no-console': 'off',
+    'comma-dangle': 'off',
+    'object-curly-newline': 'off',
+    'function-paren-newline': 'off',
+    'arrow-parens': 'off'
   },
-  "env": {
-    "browser": true,
-    "node": true
-  }  
+  env: {
+    browser: true,
+    node: true
+  }
 };

@@ -1,13 +1,13 @@
-const {
-  sequelize, Hotel, Restaurant, Attraction
-} = require('./models.js');
+const { sequelize, Hotel, Restaurant, Attraction } = require('./models.js');
 
-let promises = [];
+const promises = [];
 
 sequelize
   .authenticate()
   .then(() => {
-    console.log('Connection has been established successfully.\n\nInitializing database...');
+    console.log(
+      'Connection has been established successfully.\n\nInitializing database...'
+    );
 
     promises.push(Restaurant.sync());
     promises.push(Hotel.sync());
@@ -19,7 +19,7 @@ sequelize
     sequelize.close();
   })
   .catch((err) => {
-    console.error('Unable to connect to the database:', err);
+    console.log('initDb: ', err.toString());
   })
   .finally(() => {
     process.exit();

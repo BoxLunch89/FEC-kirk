@@ -5,11 +5,14 @@ const COORDS = {
   max_longitude: -122390252 // -122.390252
 };
 
-let randomNumber = (min, max) => Math.floor(Math.random() * (max - min)) + min;
+const randomNumber = (min, max) =>
+  Math.floor(Math.random() * (max - min)) + min;
 
-let getRandomCoordinates = () => {
-  let latitude = randomNumber(COORDS.min_latitude, COORDS.max_latitude) / 1000000;
-  let longitude = randomNumber(COORDS.min_longitude, COORDS.max_longitude) / 1000000;
+const getRandomCoordinates = () => {
+  const latitude =
+    randomNumber(COORDS.min_latitude, COORDS.max_latitude) / 1000000;
+  const longitude =
+    randomNumber(COORDS.min_longitude, COORDS.max_longitude) / 1000000;
 
   return { latitude, longitude };
 };

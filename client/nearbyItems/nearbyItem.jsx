@@ -24,13 +24,14 @@ const NearbyItem = ({ item, getDistance }) => (
       <div className={style.itemName}>{item.name}</div>
       <div className={style.itemReviews}>
         <ReviewBubbles rating={item.rating} />
-        <div className={style.reviewCount}>{renderReviews(item.num_reviews)}</div>
+        <div className={style.reviewCount}>
+          {renderReviews(item.num_reviews)}
+        </div>
       </div>
       <div className={style.itemDistance}>
         {renderMiles(getDistance(item.latitude, item.longitude))}
       </div>
     </div>
-
   </div>
 );
 
