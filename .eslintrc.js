@@ -11,7 +11,8 @@ module.exports = {
     'no-console': 'off',
     'comma-dangle': 'off',
     'object-curly-newline': 'off',
-    'function-paren-newline': 'off'
+    'function-paren-newline': 'off',
+    'arrow-parens': 'off'
   },
   env: {
     browser: true,
