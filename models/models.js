@@ -1,8 +1,13 @@
 const Sequelize = require('sequelize');
 
-const { NEARBY_DATABASE_URL } = process.env;
+const { NEARBY_DB_HOST, NEARBY_DB_USER, NEARBY_DB_PASS } = process.env;
 
-const sequelize = new Sequelize(NEARBY_DATABASE_URL, { logging: false });
+const sequelize = new Sequelize('nearbyitems', NEARBY_DB_USER, NEARBY_DB_PASS, {
+  logging: false,
+  dialect: 'postgres',
+  host: NEARBY_DB_HOST,
+  port: '5432'
+});
 
 const Restaurant = sequelize.define('restaurant', {
   restaurant_id: {
@@ -52,7 +57,9 @@ const Attraction = sequelize.define('attraction', {
   image_url: Sequelize.STRING
 });
 
-
 module.exports = {
-  sequelize, Restaurant, Hotel, Attraction
+  sequelize,
+  Restaurant,
+  Hotel,
+  Attraction
 };

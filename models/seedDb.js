@@ -1,14 +1,12 @@
 const faker = require('faker');
 const randomCoordinates = require('./randomCoordinates');
 const randomImages = require('./randomImages');
-const {
-  sequelize, Restaurant, Hotel, Attraction
-} = require('./models.js');
+const { sequelize, Restaurant, Hotel, Attraction } = require('./models.js');
 
-let randomItem = (type, id) => {
-  let coords = randomCoordinates.getRandomCoordinates();
+const randomItem = (type, id) => {
+  const coords = randomCoordinates.getRandomCoordinates();
 
-  let item = {
+  const item = {
     name: faker.address.city(faker.random.number({ min: 0, max: 3 })),
     latitude: coords.latitude,
     longitude: coords.longitude,
@@ -25,28 +23,29 @@ let randomItem = (type, id) => {
   return item;
 };
 
-let promises = {
+const promises = {
   hotels: [],
   attractions: [],
   restaurants: []
 };
 
-let counters = {
+const counters = {
   hotel: 0,
   attraction: 0,
   restaurant: 0
 };
 
-let rejections = {
+const rejections = {
   hotel: 0,
   attraction: 0,
   restaurant: 0
 };
 
-let insertItem = (type, Model, id) => {
-  let item = Model.build(randomItem(type, id));
+const insertItem = (type, Model, id) => {
+  const item = Model.build(randomItem(type, id));
 
-  return item.save()
+  return item
+    .save()
     .then(() => {
       counters[type] += 1;
     })
@@ -55,66 +54,73 @@ let insertItem = (type, Model, id) => {
     });
 };
 
-console.log('Seeding database...');
-
-for (let i = 0; i < 200; i += 1) {
-  promises.hotels.push(insertItem('hotel', Hotel, i));
-  promises.restaurants.push(insertItem('restaurant', Restaurant, i));
-  promises.attractions.push(insertItem('attraction', Attraction, i));
-}
-
-let allHotels = Promise.all(promises.hotels)
+sequelize
+  .authenticate()
   .then(() => {
-    console.log('\nHotels:');
+    console.log('Seeding database...');
 
-    if (counters.hotel > 0) {
-      console.log(`Added ${counters.hotel} items.`);
+    for (let i = 0; i < 200; i += 1) {
+      promises.hotels.push(insertItem('hotel', Hotel, i));
+      promises.restaurants.push(insertItem('restaurant', Restaurant, i));
+      promises.attractions.push(insertItem('attraction', Attraction, i));
     }
-    if (rejections.hotel > 0) {
-      console.log(`Rejected ${rejections.hotel} inserts`);
-    }
+
+    const allHotels = Promise.all(promises.hotels)
+      .then(() => {
+        console.log('\nHotels:');
+
+        if (counters.hotel > 0) {
+          console.log(`Added ${counters.hotel} items.`);
+        }
+        if (rejections.hotel > 0) {
+          console.log(`Rejected ${rejections.hotel} inserts`);
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+
+    const allRestaurants = Promise.all(promises.restaurants)
+      .then(() => {
+        console.log('\nRestaurants:');
+        console.log(`Added ${counters.restaurant} items.`);
+
+        if (counters.restaurant > 0) {
+          console.log(`Added ${counters.restaurant} items.`);
+        }
+        if (rejections.restaurant > 0) {
+          console.log(`Rejected ${rejections.restaurant} inserts.`);
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+
+    const allAttractions = Promise.all(promises.attractions)
+      .then(() => {
+        console.log('\nAttractions:');
+        console.log(`Added ${counters.attraction} items.`);
+
+        if (counters.attraction > 0) {
+          console.log(`Added ${counters.attraction} items.`);
+        }
+        if (rejections.attraction > 0) {
+          console.log(`Rejected ${rejections.attraction} inserts.`);
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+
+    Promise.all([allHotels, allRestaurants, allAttractions])
+      .then(() => {
+        sequelize.close();
+        process.exit();
+      })
+      .catch(() => {
+        process.exit();
+      });
   })
   .catch((err) => {
-    console.log(err);
-  });
-
-let allRestaurants = Promise.all(promises.restaurants)
-  .then(() => {
-    console.log('\nRestaurants:');
-    console.log(`Added ${counters.restaurant} items.`);
-
-    if (counters.restaurant > 0) {
-      console.log(`Added ${counters.restaurant} items.`);
-    }
-    if (rejections.restaurant > 0) {
-      console.log(`Rejected ${rejections.restaurant} inserts.`);
-    }
-  })
-  .catch((err) => {
-    console.log(err);
-  });
-
-let allAttractions = Promise.all(promises.attractions)
-  .then(() => {
-    console.log('\nAttractions:');
-    console.log(`Added ${counters.attraction} items.`);
-
-    if (counters.attraction > 0) {
-      console.log(`Added ${counters.attraction} items.`);
-    }
-    if (rejections.attraction > 0) {
-      console.log(`Rejected ${rejections.attraction} inserts.`);
-    }
-  })
-  .catch((err) => {
-    console.log(err);
-  });
-
-Promise.all([allHotels, allRestaurants, allAttractions])
-  .then(() => {
-    sequelize.close();
-    process.exit();
-  })
-  .catch(() => {
-    process.exit();
+    console.log('seedDb.js: ', err.toString());
   });
