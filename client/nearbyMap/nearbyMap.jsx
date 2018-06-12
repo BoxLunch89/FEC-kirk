@@ -3,23 +3,32 @@ import React from 'react';
 import loadJS from './loadJS';
 import style from './nearbyMap.css';
 
-let { NEARBY_GOOGLE_MAPS_API_KEY } = process.env;
+const { NEARBY_GOOGLE_MAPS_API_KEY } = process.env;
 
 class NearbyMap extends React.Component {
   componentDidMount() {
     // Google Maps' script will be loaded onto the DOM as a script tag and will run this function,
     //   so it's needed on the global scope
     window.initializeMap = this.initializeMap.bind(this);
-    loadJS(`https://maps.googleapis.com/maps/api/js?key=${NEARBY_GOOGLE_MAPS_API_KEY}&callback=initializeMap`);
+    if (NEARBY_GOOGLE_MAPS_API_KEY) {
+      loadJS(
+        `https://maps.googleapis.com/maps/api/js?key=${NEARBY_GOOGLE_MAPS_API_KEY}&callback=initializeMap`
+      );
+    } else {
+      console.error('No Google Maps API key provided.');
+    }
   }
 
   initializeMap() {
-    let attraction = { lat: this.props.attraction.latitude, lng: this.props.attraction.longitude };
-    let map = new google.maps.Map(window.document.getElementById('map'), {
+    const attraction = {
+      lat: this.props.attraction.latitude,
+      lng: this.props.attraction.longitude
+    };
+    const map = new google.maps.Map(window.document.getElementById('map'), {
       zoom: 14,
       center: attraction
     });
-    let marker = new google.maps.Marker({
+    const marker = new google.maps.Marker({
       position: attraction,
       map
     });
