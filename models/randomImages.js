@@ -46,14 +46,14 @@ const imageUrlsOf = {
   ]
 };
 
-let randomNumber = (min, max) => Math.floor(Math.random() * (max - min)) + min;
+const randomNumber = (min, max) =>
+  Math.floor(Math.random() * (max - min)) + min;
 
 const randomImages = (type = 'attraction') => {
-  let imageUrls = imageUrlsOf[type];
-  let index = randomNumber(0, imageUrls.length);
+  const imageUrls = imageUrlsOf[type];
+  const index = randomNumber(0, imageUrls.length);
 
   return imageUrls[index];
 };
 
 module.exports = randomImages;
-

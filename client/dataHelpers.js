@@ -1,8 +1,9 @@
 import axios from 'axios';
 
-const getItem = (type, id) => (
+const getItem = (type, id) =>
   new Promise((resolve) => {
-    axios.get(`/nearby/${type}/${id}`)
+    axios
+      .get(`/nearby/${type}/${id}`)
       .then((item) => {
         resolve(item.data);
       })
@@ -25,16 +26,18 @@ const getItem = (type, id) => (
         }
         console.log(error.config);
       });
-  })
-);
+  });
 
-const getFourIds = id => (
-  [(id + 1) % 200, (id + 2) % 200, (id + 3) % 200, (id + 4) % 200]
-);
+const getFourIds = (id) => [
+  (id + 1) % 200,
+  (id + 2) % 200,
+  (id + 3) % 200,
+  (id + 4) % 200
+];
 
 const getNearest = (type, id) => {
-  let nearest = [];
-  let nearestIds = getFourIds(id);
+  const nearest = [];
+  const nearestIds = getFourIds(id);
 
   nearestIds.forEach((nearestId) => {
     nearest.push(getItem(type, nearestId));
@@ -44,13 +47,12 @@ const getNearest = (type, id) => {
 };
 
 const getData = async (id) => {
-  let attraction = getItem('attractions', id);
-  let hotels = getNearest('hotels', id);
-  let restaurants = getNearest('restaurants', id);
-  let attractions = getNearest('attractions', id);
+  const attraction = getItem('attractions', id);
+  const hotels = getNearest('hotels', id);
+  const restaurants = getNearest('restaurants', id);
+  const attractions = getNearest('attractions', id);
 
   return Promise.all([attraction, hotels, restaurants, attractions]);
 };
-
 
 module.exports = { getItem, getNearest, getData };

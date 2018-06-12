@@ -20,20 +20,19 @@ class Nearby extends React.Component {
       dataLoaded: false
     };
 
-    getData(props.id)
-      .then(((data) => {
-        this.setState({
-          attraction: data[0],
-          hotels: data[1],
-          restaurants: data[2],
-          attractions: data[3],
-          dataLoaded: true
-        });
-      }));
+    getData(props.id).then((data) => {
+      this.setState({
+        attraction: data[0],
+        hotels: data[1],
+        restaurants: data[2],
+        attractions: data[3],
+        dataLoaded: true
+      });
+    });
   }
 
   getDistance(latitude, longitude) {
-    let km = distance(
+    const km = distance(
       this.state.attraction.latitude,
       this.state.attraction.longitude,
       latitude,
@@ -46,13 +45,12 @@ class Nearby extends React.Component {
     return (
       <div className={`nearby ${style.nearby}`}>
         <div className={style.blockHeader}>
-          <div className={style.blockTitle}>
-            Nearby
-          </div>
+          <div className={style.blockTitle}>Nearby</div>
         </div>
         <div className={style.mapBlock}>
-          {this.state.dataLoaded &&
-            <NearbyMap attraction={this.state.attraction} />}
+          {this.state.dataLoaded && (
+            <NearbyMap attraction={this.state.attraction} />
+          )}
         </div>
         <NearbyItems
           type="Hotel"
